@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+#include <sys/time.h>
+
+int t = 0;
+void sig_alarm(int signum)
+{
+	static	int time = 0;
+	time = time+1;
+	printf("\033[0;0H");
+	printf("\r%3d秒 %3d毫秒\n",time/1000,time%1000);
+	t = time;	
+}
+
+void sig_int(int signum)
+{
+	printf("\033[0;0H");
+	//printf("\r%3d秒 %3d毫秒\n",t/1000,t%1000);
+	static struct itimerval new_it = {};
+	static struct itimerval old_it = {};
+	setitimer(ITIMER_REAL,&new_it,&old_it);
+	
+	new_it = old_it;
+}
+
+
+int main()
+{
+	system("clear");
+	signal(SIGALRM,sig_alarm);
+	signal(SIGINT,sig_int);
+	struct itimerval it = {{0,1000},{1,0}};
+	setitimer(ITIMER_REAL,&it,NULL);
+
+	while(1)
+	{
+		pause();
+	}
+}

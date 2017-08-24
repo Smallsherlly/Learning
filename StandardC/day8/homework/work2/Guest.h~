@@ -1,0 +1,16 @@
+
+#ifndef _GUEST_H_
+#define _GUEST_H_
+typedef struct Guest
+{
+	char name[24];
+	int psw;
+	
+}Gue;
+
+
+	
+	
+	
+#endif	
+	

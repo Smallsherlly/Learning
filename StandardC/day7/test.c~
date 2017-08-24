@@ -1,0 +1,15 @@
+#include<stdio.h>
+
+
+
+int main()
+{
+	int a = 0x18456787;
+	char *p = (char*)&a;
+	for(int i =0; i<4;i++)
+	{
+		printf("%p\n",p+i);
+		printf("%d\n",*(p+i));
+	}
+	return 0;	
+}

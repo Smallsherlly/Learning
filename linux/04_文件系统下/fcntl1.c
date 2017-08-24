@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/fcntl.h>
+
+//显示文件状态标志
+void print_flags(int flags)
+{
+	struct {
+		int flag;
+		const char* desc;
+	}
+	flist[] = {
+		O_RDONLY,"O_RDONLY",       //只读
+		O_WRONLY,"O_WRONLY",	   //只写
+		O_RDWR,"O_RDWR",	   //读写
+		O_APPEND,"O_APPEND",       //追加
+		O_CREAT,"O_CREAT",	   //创建
+		O_EXCL,"O_EXCL",           //存在则报错
+		O_TRUNC,"O_TRUNC",	   //存在则清空
+		O_NOCTTY,"O_NOCTTY",
+		O_NONBLOCK,"O_NONBLOCK",
+		O_SYNC,"O_SYNC",
+		O_DSYNC,"O_DSYNC",
+		O_RSYNC,"O_RSYNC",
+		O_ASYNC,"O_ASYNC"	
+	};
+
+	printf("获取到的文件状态标志有： \n");
+	int i = 0;
+	for(; i<sizeof(flist)/sizeof(flist[0]); i++)
+	{	
+		if(flags & flist[i].flag)
+		{
+			printf("%s\n",flist[i].desc);
+		}
+	}
+}
+
+int main ()
+{
+	//新建一个文件，如果文件存在则清空
+	int fd = open("flags.txt",O_WRONLY|O_CREAT|O_TRUNC);
+	//获取文件状态标志
+	int flags = fcntl(fd,F_GETFL);
+	//显示获取到的文件状态标志
+	print_flags(flags);
+	//追加状态标志
+		
+	if(0 > fcntl(fd,F_SETFL,O_RDWR|O_APPEND))
+	{
+		perror("fcntl");
+		return -1;
+	}
+	flags = fcntl(fd,F_GETFL);
+	print_flags(flags);
+	return 0;	
+}

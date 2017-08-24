@@ -1,0 +1,21 @@
+ #include <signal.h>  
+   #include <stdio.h>  
+   #include <unistd.h>  
+      
+   void ouch(int sig)  
+   {  
+       printf("\rI got signal \n");  
+       // (void) signal(SIGINT, SIG_DFL);  
+      //(void) signal(SIGINT, ouch);  
+     
+  }  
+        
+ int main()  
+ {  signal(SIGINT, ouch);  
+   
+     while(1)  
+    {  
+        printf("hello world...\n");  
+         sleep(1);  
+     }  
+ }

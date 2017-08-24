@@ -1,0 +1,107 @@
+#include<stdio.h>
+int circle();
+int out();
+int iN = 0;
+int iM = 0;
+int main()
+{
+	
+	scanf("%d",&iN);
+	int arr[iN][iN];
+	iM = iN;
+	
+	
+	
+	
+	circle(arr);
+	out(arr);
+	
+	
+	
+	return 0;	
+}
+
+int circle(int x[iN][iN])
+{
+	int iRound = 0;
+	int i = 0,j = 0;
+	int iCount = 1;
+	int iNum = 0;
+	
+	while(iRound < iM/2+iM%2)
+	{
+		while(j < iN)//行赋值循环
+		{
+			if(iNum==iM*iM)
+			break;
+			x[i][j] = iCount;
+			iNum++;	
+			j++;
+			iCount++;	
+		}
+		j--;
+		i++;
+		while(i < iN)
+		{
+			if(iNum==iM*iM)
+			break;
+			x[i][j] = iCount;
+			iNum++;
+			i++;
+			iCount++;
+			
+		}
+//printf("%d\n",iCount);
+		i--;
+		j--;
+		while(j >= iRound)
+		{
+			if(iNum==iM*iM)
+			break;
+			x[i][j] = iCount;
+			iNum++;
+			j--;
+			iCount++;
+		}
+
+		j++;
+		i--;
+		while(i > iRound)
+		{
+			if(iNum==iM*iM)
+			break;
+			x[i][j] = iCount;
+			iNum++;
+			i--;
+			iCount++;
+		}
+		
+		//printf("%d %d\n",i,j);
+		//printf("%d\n",iCount);
+		i++;
+		j++;
+		iN = iN-1;
+		iRound++;
+	
+	}
+}
+
+int out(int y[iM][iM])
+{
+	int a = 0,b = 0;
+	
+	while(a<iM)
+	{
+		b = 0;
+		while(b<iM)
+		{
+			printf("%2d ",y[a][b]);
+			b++;
+			
+			
+		}
+		printf("\n");
+		a++;
+		
+	}
+}

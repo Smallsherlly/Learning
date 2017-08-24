@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
+#include <sys/stat.h>
+#include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include "struct.h"
+#include <signal.h>
+
+int main(int argc,char* argv[])	
+{
+	struct account acc = {};
+	struct msg msg = {};
+	struct msg msg2 = {};
+
+	//获取消息队列
+	key_t key1 = ftok(".",11);
+	key_t key2 = ftok(".",22);
+	int msgid_s = msgget(key1,0);
+	int msgid_r = msgget(key2,0);
+	while(1)
+	{
+		if(msgrcv(msgid_r,&msg,sizeof(msg.acc),440,IPC_NOWAIT)!=-1)
+		{
+			msgsnd(msgid_s,&msg,sizeof(msg.acc),0);
+			printf("_%d进程已关闭\n",msg.type);		
+			return 0;
+		}
+		
+		if(msgrcv(msgid_r,&msg,sizeof(msg.acc),444,IPC_NOWAIT)!=-1)
+		{
+			//读取指定账户文件
+			char s[30] = {};
+			sprintf(s,"%s%ld%s","./data/",msg.acc.id[0],".bat");
+			FILE* fp = fopen(s,"r+");
+			if(0 > fp)
+			{
+				perror("fopen");
+				return -1;
+			}
+			fread(&msg2.acc,sizeof(msg.acc),1,fp);
+			msg.acc.money = msg2.acc.money-msg.acc.money;
+			fseek(fp,0,SEEK_SET);
+			if(msg.acc.money > 0)
+			{
+				fwrite(&msg.acc,sizeof(msg.acc),1,fp);
+			}
+			fclose(fp);
+			msgsnd(msgid_s,&msg,sizeof(msg.acc),0);
+
+		}
+	}
+	
+	return 0;
+}

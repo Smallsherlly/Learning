@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
+#include <sys/stat.h>
+#include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include "struct.h"
+#include <signal.h>
+#include <stdlib.h>
+
+int main()
+{
+	struct account acc = {};
+	struct msg msg = {};
+
+	//创建消息队列
+	key_t key1 = ftok(".",11);
+	key_t key2 = ftok(".",22);
+
+	int msgid_s = msgget(key1,0644|IPC_CREAT|IPC_EXCL);
+	int msgid_r = msgget(key2,0644|IPC_CREAT|IPC_EXCL);
+	
+	int i = 1;
+	pid_t pid = getpid();
+	//创建子进程
+	for(; i<8; i++)
+	{
+		pid = vfork();
+		if(0 == pid)
+		{
+			char s[20] = {};
+			sprintf(s,"%s%d%d%d","_",i,i,i);
+			printf("%s进程已打开\n",s);
+			execl(s,s,NULL);
+		}
+	}
+	
+
+	scanf("%*c");
+	
+	//关闭子进程
+	msg.type = 110;
+	msgsnd(msgid_r,&msg,sizeof(msg.acc),0);
+	msg.type = 220;
+	msgsnd(msgid_r,&msg,sizeof(msg.acc),0);
+	msg.type = 330;
+	msgsnd(msgid_r,&msg,sizeof(msg.acc),0);
+	msg.type = 440;
+	msgsnd(msgid_r,&msg,sizeof(msg.acc),0);
+	msg.type = 550;
+	msgsnd(msgid_r,&msg,sizeof(msg.acc),0);
+	msg.type = 660;
+	msgsnd(msgid_r,&msg,sizeof(msg.acc),0);
+	msg.type = 770;
+	msgsnd(msgid_r,&msg,sizeof(msg.acc),0);
+	
+	scanf("%*c");
+	//销毁消息队列
+	msgctl(msgid_s,IPC_RMID,NULL);
+	msgctl(msgid_r,IPC_RMID,NULL);
+	return 0;	
+}

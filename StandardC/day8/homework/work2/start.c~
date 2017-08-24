@@ -1,0 +1,21 @@
+#include<stdio.h>
+#include"Guest.h"
+extern int i;
+
+extern Gue gue[];
+void reg()
+{
+	FILE *fp = fopen("./shuju.txt","a+");
+
+	printf("请输入用户名");
+	scanf("%s",gue[i].name);
+	printf("请输入密码");
+	scanf("%s",gue[i].psw);
+//	printf("请再一次输入密码");
+	fwrite(&gue[i],sizeof(Gue),1,fp);
+	//rewind(fp);	
+	
+	fclose(fp);
+	
+		
+}
