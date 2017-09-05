@@ -1,5 +1,5 @@
 NAME=ring
-OBJ=start.o ring.o  mytest.o 
+OBJ=start.o tools.o  key.o clock_init.o
 CC=arm-linux-gcc
 LD=arm-linux-ld
 CFLAGS=-nostdlib -march=armv5te
@@ -23,4 +23,4 @@ elf:$(OBJ)
 	$(CC) $(CFLAGS) -c   $<  -o  $@
 
 clean:
-	rm  $(NAME).elf   $(NAME).bin  $(OBJ) 
+	rm  $(NAME).elf   $(NAME).bin  $(OBJ)

@@ -21,8 +21,6 @@ b loop
 loop_end:
 ldr pc,=_start
 
-
-
 _start:
 
 @1.p828 WTCON 0xE2700000 b[5]=0
@@ -39,4 +37,5 @@ MCR p15, 0, r1, c1, c0, 0 ;
 @3.设置栈指针	C语言默认使用满减栈
 ldr r13,=SVC_STACK
 
-bl Main
+bl clock_init
+bl key_polling
