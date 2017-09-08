@@ -4,6 +4,10 @@
 .global led2_on
 .global led3_on
 .global led4_on
+.global led1_off
+.global led2_off
+.global led3_off
+.global led4_off
 .global led_init
 
 
@@ -143,10 +147,20 @@ str r3,[r0]
 mov pc,lr
 
 
-@流水灯循环
 led1_on:
 ldr r0,=0xE0200244    
 ldr r1,=0x00000000
+ldr r2,=0xfffffff7
+ldr r3,[r0]
+and r3,r3,r2
+orr r3,r3,r1
+str r3,[r0]
+
+mov pc,lr
+
+led1_off:
+ldr r0,=0xE0200244    
+ldr r1,=0x00000008
 ldr r2,=0xfffffff7
 ldr r3,[r0]
 and r3,r3,r2
@@ -166,6 +180,17 @@ str r3,[r0]
 
 mov pc,lr
 
+led2_off:
+ldr r0,=0xE0200244    
+ldr r1,=0x00000010
+ldr r2,=0xffffffef
+ldr r3,[r0]
+and r3,r3,r2
+orr r3,r3,r1
+str r3,[r0]
+
+mov pc,lr
+
 led3_on:
 ldr r0,=0xE0200244    
 ldr r1,=0x00000000
@@ -177,9 +202,31 @@ str r3,[r0]
 
 mov pc,lr
 
+led3_off:
+ldr r0,=0xE0200244    
+ldr r1,=0x00000020
+ldr r2,=0xffffffdf
+ldr r3,[r0]
+and r3,r3,r2
+orr r3,r3,r1
+str r3,[r0]
+
+mov pc,lr
+
 led4_on:
 ldr r0,=0xE02000A4    
 ldr r1,=0x00000000
+ldr r2,=0xfffffffd
+ldr r3,[r0]
+and r3,r3,r2
+orr r3,r3,r1
+str r3,[r0]
+
+mov pc,lr
+
+led4_off:
+ldr r0,=0xE02000A4    
+ldr r1,=0x00000002
 ldr r2,=0xfffffffd
 ldr r3,[r0]
 and r3,r3,r2
