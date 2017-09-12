@@ -2,6 +2,23 @@
 #define	SVC_STACK	0xD0037D80
 
 .global _start
+.global end
+
+loop_before:
+ldr r3,=end
+adr r0,_start
+ldr r1,=_start
+loop: 
+cmp r1,r3
+beq loop_end
+ldr r2,[r0]
+str r2,[r1]
+add r0,r0,#4    @此处关键，每个寄存器容量为32位，即四个字节，所以每次拷贝完的步进也为4
+add r1,r1,#4
+b loop
+
+loop_end:
+ldr pc,=_start
 
 _start:
 @p828 WTCON 0xE2700000 b[5]=0

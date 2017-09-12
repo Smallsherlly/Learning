@@ -24,14 +24,11 @@ int Main()
 	r2=0xffffff0f;
 	GPD0CON = GPD0CON&r2;
 	GPD0CON = GPD0CON|r1;
-
-
   
 	r1=0x00000000;
 	r2=0xffff81ff;
 	GPJ0PUD = GPJ0PUD&r2;
 	GPJ0PUD = GPJ0PUD|r1;
-
 
 	r1=0x00000000;
 	r2=0xfffffff3;
@@ -44,7 +41,6 @@ int Main()
 	r2=0xfffffffd;
 	GPD0DAT = GPD0DAT&r2;
 	GPD0DAT = GPD0DAT|r1;
-
   
 	r1=0x00000038;
 	r2=0xffffffc7;
